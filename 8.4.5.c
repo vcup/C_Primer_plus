@@ -22,7 +22,7 @@ int main(void) {
     int stop = MAX_INT;
     int start = MIN_INT;
     char is;
-    for (PRINT_BEGIN_CHAR(), fprintf(Output, QUEST_CHAR_1, may_int), PRINT_REQUEST_CHAR(); (is = get_a_choice()) != 'r';) {
+    for (PRINT_BEGIN_CHAR(), fprintf(Output, QUEST_CHAR_1, may_int), PRINT_REQUEST_CHAR(); (is = get_a_choice());) {
         if (stop == may_int || start == may_int) {
             PRINT_JUST_OEN_POSSIBLE();
             break;
@@ -34,7 +34,7 @@ int main(void) {
         } else {
             start = may_int;
         }
-        may_int = start + (stop - start) / 2;
+        may_int = (stop + start) / 2;
         fprintf(Output, QUEST_CHAR_2, may_int);
         PRINT_REQUEST_CHAR();
     }
@@ -44,7 +44,8 @@ int main(void) {
 char get_a_choice(void) {
     char choice;
     do_choice:
-    for (choice = getc(Input); getc(Input) != '\n';);
+    for (;isspace(choice = getc(Input)););
+    for (;!isspace(getc(Input)););
     choice = tolower(choice);
     switch (choice) {
         case 'r':
